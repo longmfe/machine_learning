@@ -67,7 +67,7 @@ if __name__ == '__main__':
     housing = load_housing_data()
     housing.hist(bins=50, figsize=(20, 15))
     mpl.use('Agg')
-    # housing.head()
+    housing.head()
     # train_set, test_set = split_train_test(housing, 0.2)
     # print len(train_set), "train +", len(test_set), "test"
     # train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
