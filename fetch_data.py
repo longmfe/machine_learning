@@ -8,6 +8,9 @@ import hashlib
 from sklearn.model_selection import StratifiedShuffleSplit
 import matplotlib as mpl
 # import matplotlib.pyplot as plt
+# from pandas.plotting import scatter_matrix
+# from sklearn.preprocessing import Imputer
+from sklearn.preprocessing import LabelEncoder
 
 DOWNLOAD_ROOT = "http://raw.githubusercontent.com/ageron/handson-ml/master/"
 HOUSING_PATH = "datasets/housing"
@@ -70,7 +73,9 @@ if __name__ == '__main__':
     # housing.head()
     # train_set, test_set = split_train_test(housing, 0.2)
     # print len(train_set), "train +", len(test_set), "test"
-    # train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
+    # train_set, test_set = train_test_split(housing,
+    #                                        test_size=0.2,
+    #                                        random_state=42)
     column_name = "income_cat"
     housing[column_name] = np.ceil(housing["median_income"] / 1.5)
     housing[column_name].where(housing[column_name] < 5, 5.0, inplace=True)
@@ -80,12 +85,56 @@ if __name__ == '__main__':
     train_prop = get_data_proportion_by_column(train_set, column_name)
     test_prop = get_data_proportion_by_column(test_set, column_name)
 
-    print 'housing_prop:', housing_prop
-    print 'train_prop:', train_prop
-    print 'test_prop:', test_prop
+    # print 'housing_prop:', housing_prop
+    # print 'train_prop:', train_prop
+    # print 'test_prop:', test_prop
 
     for item in (train_set, test_set):
         item.drop([column_name], axis=1, inplace=True)
 
-    print train_set.columns, test_set.columns
+    # print train_set.columns, test_set.columns
+    # train_data = train_set.copy()
+    # train_data.plot(kind="scatter",
+    #                 x="longitude",
+    #                 y="latitude",
+    #                 alpha=0.1,
+    #                 figsize=(20, 15))
 
+    # train_data.plot(kind="scatter",
+    #                 x="longitude",
+    #                 y="latitude",
+    #                 alpha=0.4,
+    #                 s=train_data["population"]/100,
+    #                 label="population",
+    #                 c="median_house_value",
+    #                 cmap=plt.get_cmap("jet"),
+    #                 colorbar=True)
+    # plt.legend()
+
+    # correlations
+    # train_data["rooms_per_household"] = train_data["total_rooms"]/train_data["households"]
+    # train_data["bedrooms_per_room"] = train_data["total_bedrooms"]/train_data["total_rooms"]
+    # train_data["population_per_household"] = train_data["population"]/train_data["households"]
+    #
+    # corr_matrix = train_data.corr()
+    # mhv_top_corr = corr_matrix["median_house_value"].sort_values(ascending=False)
+    # print (mhv_top_corr)
+    #
+    # attributes = ["median_house_value", "median_income", "total_rooms",
+    #               "housing_median_age"]
+    # scatter_matrix(train_data[attributes], figsize=(12, 8))
+    # plt.show()
+    # plt.savefig('/vagrant/data_images/scatter_matrix.png', format='png')
+    housing = train_set.drop("median_house_value", axis=1)
+    housing_labels = train_set["median_house_value"].copy()
+
+    # imputer = Imputer(strategy="median")
+    # housing_num = housing.drop("ocean_proximity", axis=1)
+    # imputer.fit(housing_num)
+    # print(imputer.statistics_)
+
+    encoder = LabelEncoder()
+    housing_cat = housing["ocean_proximity"]
+    housing_cat_encoded = encoder.fit_transform(housing_cat)
+    print(housing_cat_encoded)
+    print(encoder.classes_)
