@@ -12,9 +12,10 @@ import matplotlib as mpl
 # from sklearn.preprocessing import Imputer
 # from sklearn.preprocessing import LabelEncoder
 # from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import LabelBinarizer
-from combined_attributes_adder import CombinedAttributesAdder
+# from sklearn.preprocessing import LabelBinarizer
+# from combined_attributes_adder import CombinedAttributesAdder
 from fetch_data import FetchData
+from transformation_pipelines import TransformationPipelines
 
 if __name__ == '__main__':
     fetch_data = FetchData()
@@ -77,7 +78,8 @@ if __name__ == '__main__':
     # scatter_matrix(train_data[attributes], figsize=(12, 8))
     # plt.show()
     # plt.savefig('/vagrant/data_images/scatter_matrix.png', format='png')
-    housing = train_set.drop("median_house_value", axis=1)
+    # housing = train_set.drop("median_house_value", axis=1)
+    housing = train_set.copy()
     housing_labels = train_set["median_house_value"].copy()
 
     # imputer = Imputer(strategy="median")
@@ -95,10 +97,18 @@ if __name__ == '__main__':
     # housing_cat_1hot = encoder.fit_transform(housing_cat_encoded.reshape(-1, 1))
     # print(housing_cat_1hot.toarray())
 
-    encoder = LabelBinarizer()
-    housing_cat_1hot = encoder.fit_transform(housing_cat)
-    print(housing_cat_1hot)
+    # encoder = LabelBinarizer()
+    # housing_cat_1hot = encoder.fit_transform(housing_cat)
+    # print(housing_cat_1hot)
+    #
+    # attr_adder = CombinedAttributesAdder(add_bedrooms_per_room=False)
+    # housing_extra_attribs = attr_adder.transform(housing.values)
+    # print(housing_extra_attribs)
 
-    attr_adder = CombinedAttributesAdder(add_bedrooms_per_room=False)
-    housing_extra_attribs = attr_adder.transform(housing.values)
-    print(housing_extra_attribs)
+    housing_num = housing.drop("ocean_proximity", axis=1)
+    num_attribs = list(housing_num)
+    cat_attribs = ["ocean_proximity"]
+    pipeline = TransformationPipelines(num_attribs, cat_attribs)
+    full_pipeline = pipeline.get_full_pipeline()
+    # housing_prepared = full_pipeline.fit_transform(housing)
+    # print(housing_prepared)
