@@ -3,10 +3,11 @@ from sklearn.pipeline import FeatureUnion
 from sklearn.preprocessing import Imputer
 # from sklearn.preprocessing import LabelEncoder
 # from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import LabelBinarizer
+# from sklearn.preprocessing import LabelBinarizer
 from sklearn.preprocessing import StandardScaler
 from combined_attributes_adder import CombinedAttributesAdder
 from dataframe_selector import DataFrameSelector
+from customer_label_binarizer import CustomerLabelBinarizer
 
 # num_attribs = list(housing_num)
 # cat_attribs = ["ocean_proximity"]
@@ -27,7 +28,7 @@ class TransformationPipelines():
 
         cat_pipeline = Pipeline([
             ('selector', DataFrameSelector(self.cat_attribs)),
-            ('label_binarizer', LabelBinarizer())
+            ('label_binarizer', CustomerLabelBinarizer())
         ])
 
         full_pipeline = FeatureUnion(transformer_list=[

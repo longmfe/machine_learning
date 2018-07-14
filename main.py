@@ -1,19 +1,5 @@
-# import os
-# import tarfile
-# from six.moves import urllib
-# import pandas as pd
 import numpy as np
-# import hashlib
-# from sklearn.model_selection import train_test_split, StratifiedShuffleSplit
-# from sklearn.model_selection import StratifiedShuffleSplit
 import matplotlib as mpl
-# import matplotlib.pyplot as plt
-# from pandas.plotting import scatter_matrix
-# from sklearn.preprocessing import Imputer
-# from sklearn.preprocessing import LabelEncoder
-# from sklearn.preprocessing import OneHotEncoder
-# from sklearn.preprocessing import LabelBinarizer
-# from combined_attributes_adder import CombinedAttributesAdder
 from fetch_data import FetchData
 from transformation_pipelines import TransformationPipelines
 
@@ -34,10 +20,10 @@ if __name__ == '__main__':
     housing[column_name].where(housing[column_name] < 5, 5.0, inplace=True)
     train_set, test_set = fetch_data.stratified_split(housing, column_name)
 
-    housing_prop = fetch_data.get_data_proportion_by_column(housing, column_name)
-    train_prop = fetch_data.get_data_proportion_by_column(train_set, column_name)
-    test_prop = fetch_data.get_data_proportion_by_column(test_set, column_name)
-
+    # housing_prop = fetch_data.get_data_proportion_by_column(housing, column_name)
+    # train_prop = fetch_data.get_data_proportion_by_column(train_set, column_name)
+    # test_prop = fetch_data.get_data_proportion_by_column(test_set, column_name)
+    #
     # print 'housing_prop:', housing_prop
     # print 'train_prop:', train_prop
     # print 'test_prop:', test_prop
@@ -78,8 +64,8 @@ if __name__ == '__main__':
     # scatter_matrix(train_data[attributes], figsize=(12, 8))
     # plt.show()
     # plt.savefig('/vagrant/data_images/scatter_matrix.png', format='png')
-    # housing = train_set.drop("median_house_value", axis=1)
-    housing = train_set.copy()
+
+    housing = train_set.drop("median_house_value", axis=1)
     housing_labels = train_set["median_house_value"].copy()
 
     # imputer = Imputer(strategy="median")
@@ -88,7 +74,7 @@ if __name__ == '__main__':
     # print(imputer.statistics_)
 
     # encoder = LabelEncoder()
-    housing_cat = housing["ocean_proximity"]
+    # housing_cat = housing["ocean_proximity"]
     # housing_cat_encoded = encoder.fit_transform(housing_cat)
     # print(housing_cat_encoded)
     # print(encoder.classes_)
@@ -110,5 +96,5 @@ if __name__ == '__main__':
     cat_attribs = ["ocean_proximity"]
     pipeline = TransformationPipelines(num_attribs, cat_attribs)
     full_pipeline = pipeline.get_full_pipeline()
-    # housing_prepared = full_pipeline.fit_transform(housing)
-    # print(housing_prepared)
+    housing_prepared = full_pipeline.fit_transform(housing)
+    print(housing_prepared)

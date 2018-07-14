@@ -1,5 +1,8 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 
+# Create a class to select numerical or categorical columns
+# since Scikit-Learn doesn't handle DataFrames yet
+
 
 class DataFrameSelector(BaseEstimator, TransformerMixin):
     def __init__(self, attribute_names):
@@ -8,5 +11,5 @@ class DataFrameSelector(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
 
-    def transform(self, X):
+    def transform(self, X, y=None):
         return X[self.attribute_names].values
