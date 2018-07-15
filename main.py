@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib as mpl
-from fetch_data import FetchData
-from transformation_pipelines import TransformationPipelines
+from lib.fetch_data import FetchData
+from lib.transformation_pipelines import TransformationPipelines
 
 if __name__ == '__main__':
     fetch_data = FetchData()

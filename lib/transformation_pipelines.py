@@ -5,9 +5,9 @@ from sklearn.preprocessing import Imputer
 # from sklearn.preprocessing import OneHotEncoder
 # from sklearn.preprocessing import LabelBinarizer
 from sklearn.preprocessing import StandardScaler
-from combined_attributes_adder import CombinedAttributesAdder
-from dataframe_selector import DataFrameSelector
-from customer_label_binarizer import CustomerLabelBinarizer
+from lib.combined_attributes_adder import CombinedAttributesAdder
+from lib.dataframe_selector import DataFrameSelector
+from lib.customer_label_binarizer import CustomerLabelBinarizer
 
 # num_attribs = list(housing_num)
 # cat_attribs = ["ocean_proximity"]
