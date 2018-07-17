@@ -2,6 +2,17 @@ import numpy as np
 import matplotlib as mpl
 from lib.fetch_data import FetchData
 from lib.transformation_pipelines import TransformationPipelines
+# from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+# from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import cross_val_score
+
+def display_scores(model_name, scores):
+    print(model_name)
+    print("Scores:", scores)
+    print("Mean:", scores.mean())
+    print("Standard deviation:", scores.std())
 
 if __name__ == '__main__':
     fetch_data = FetchData()
@@ -97,4 +108,44 @@ if __name__ == '__main__':
     pipeline = TransformationPipelines(num_attribs, cat_attribs)
     full_pipeline = pipeline.get_full_pipeline()
     housing_prepared = full_pipeline.fit_transform(housing)
-    print(housing_prepared)
+    print(housing_prepared.shape)
+
+    # lin_reg = LinearRegression()
+    # lin_reg.fit(housing_prepared, housing_labels)
+
+    # test_data = housing.iloc[:5]
+    # test_labels = housing_labels.iloc[:5]
+    # test_data_prepared = full_pipeline.transform(test_data)
+    # print(test_data_prepared.shape)
+    # print("Predictions:\t", lin_reg.predict(housing_prepared[:5]))
+    # print("Labels:\t\t", list(housing_labels[:5]))
+
+    # housing_predictions = lin_reg.predict(housing_prepared)
+    # lin_mse = mean_squared_error(housing_labels, housing_predictions)
+    # lin_rmse = np.sqrt(lin_mse)
+    # lin_scores = cross_val_score(lin_reg, housing_prepared, housing_labels,
+    #                              scoring="neg_mean_squared_error", cv=10)
+    # lin_rmse_scores = np.sqrt(-lin_scores)
+    # display_scores('linear', lin_rmse_scores)
+    #
+    # tree_reg = DecisionTreeRegressor()
+    # tree_reg.fit(housing_prepared, housing_labels)
+    # housing_predictions = tree_reg.predict(housing_prepared)
+    # tree_mse = mean_squared_error(housing_labels, housing_predictions)
+    # tree_rmse = np.sqrt(tree_mse)
+    # tree_scores = cross_val_score(tree_reg, housing_prepared, housing_labels,
+    #                               scoring="neg_mean_squared_error", cv=10)
+    # tree_rmse_scores = np.sqrt(-tree_scores)
+    # display_scores('tree', tree_rmse_scores)
+
+    #max_depth insure thie random forest regressor will not be killed
+    forest_reg = RandomForestRegressor(max_depth=10, random_state=42)
+    forest_reg.fit(housing_prepared, housing_labels)
+    # print(forest_reg)
+    housing_predictions = forest_reg.predict(housing_prepared)
+    forest_mse = mean_squared_error(housing_labels, housing_predictions)
+    forest_rmse = np.sqrt(forest_mse)
+    forest_scores = cross_val_score(forest_reg, housing_prepared, housing_labels,
+                                    scoring="neg_mean_squared_error", cv=10)
+    forest_rmse_scores = np.sqrt(-forest_scores)
+    display_scores('forest', forest_rmse_scores)
